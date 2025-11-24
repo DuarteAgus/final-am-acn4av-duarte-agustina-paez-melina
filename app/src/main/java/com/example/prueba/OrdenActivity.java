@@ -15,106 +15,100 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class OrdenActivity extends AppCompatActivity {
 
+    private TextView tvTituloOrden;
     private TextView tvResumenPlan;
-    private EditText etAlias;
+    private TextView tvPrecioPlan;
     private RadioGroup rgMetodoPago;
-    private Button btnConfirmar;
+    private EditText etAlias;
+    private EditText etCupon;
+    private Button btnConfirmarOrden;
 
-    private PlanData planSeleccionado;
+    private String planId;
+    private String planNombre;
+    private String planPrecio;
+    private String planDescripcion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orden);
 
-        tvResumenPlan = findViewById(R.id.tvResumenPlan);
-        etAlias = findViewById(R.id.etAlias);
-        rgMetodoPago = findViewById(R.id.rgMetodoPago);
-        btnConfirmar = findViewById(R.id.btnConfirmarPago);
+        tvTituloOrden   = findViewById(R.id.tvTituloOrden);
+        tvResumenPlan   = findViewById(R.id.tvResumenPlan);
+        tvPrecioPlan    = findViewById(R.id.tvPrecioPlan);
+        rgMetodoPago    = findViewById(R.id.rgMetodoPago);
+        etAlias         = findViewById(R.id.etAlias);
+        etCupon         = findViewById(R.id.etCupon);
+        btnConfirmarOrden = findViewById(R.id.btnConfirmarOrden);
 
-        String planId = getIntent().getStringExtra(OfertasActivity.EXTRA_PLAN_ID);
-        planSeleccionado = getPlanById(planId);
+        planId = getIntent().getStringExtra(OfertasActivity.EXTRA_PLAN_ID);
+        configurarPlan(planId);
 
-        if (planSeleccionado == null) {
-            Toast.makeText(this, "Plan no válido", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-        String resumen = "Estás contratando: " + planSeleccionado.nombre +
-                "\nPrecio: " + planSeleccionado.precio +
-                "\n\n" + planSeleccionado.descripcion;
-        tvResumenPlan.setText(resumen);
-
-        btnConfirmar.setOnClickListener(v -> confirmarPago());
+        btnConfirmarOrden.setOnClickListener(v -> confirmarOrden());
     }
 
-    private void confirmarPago() {
+    private void configurarPlan(String id) {
+        if ("nebula".equals(id)) {
+            planNombre = "Plan Nebula";
+            planPrecio = "10.000 ARS / mes";
+            planDescripcion =
+                    "Ideal para jugadores casuales: 60 fps estables en 1080p.\n" +
+                            "Incluye catálogo base y soporte estándar.";
+        } else if ("quantum".equals(id)) {
+            planNombre = "Plan Quantum";
+            planPrecio = "15.000 ARS / mes";
+            planDescripcion =
+                    "Pensado para gamers exigentes: 120 fps en 1080p / 60 fps en 1440p.\n" +
+                            "Catálogo completo y soporte prioritario.";
+        } else if ("eclipse".equals(id)) {
+            planNombre = "Plan Eclipse";
+            planPrecio = "20.000 ARS / mes";
+            planDescripcion =
+                    "Lo máximo para streamers: 4K HDR, servidores premium.\n" +
+                            "Catálogo + DLCs selectos y soporte dedicado 24/7.";
+        } else {
+            planNombre = "Plan desconocido";
+            planPrecio = "0 ARS";
+            planDescripcion = "No se pudo identificar el plan.";
+        }
+
+        tvTituloOrden.setText("NuCloud Gaming - " + planNombre);
+        tvResumenPlan.setText(planDescripcion);
+        tvPrecioPlan.setText("Precio: " + planPrecio);
+    }
+
+    private void confirmarOrden() {
         int checkedId = rgMetodoPago.getCheckedRadioButtonId();
         if (checkedId == -1) {
             Toast.makeText(this, "Seleccioná un método de pago", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        RadioButton rb = findViewById(checkedId);
-        String metodo = rb.getText().toString();
+        RadioButton rbSeleccionado = findViewById(checkedId);
+        String metodoPago = rbSeleccionado.getText().toString();
 
         String alias = etAlias.getText().toString().trim();
         if (TextUtils.isEmpty(alias)) {
-            etAlias.setError("Ingresá el alias o número de tarjeta");
+            etAlias.setError("Ingresá un alias o número de tarjeta");
             return;
         }
 
+        String cupon = etCupon.getText().toString().trim();
+
         SharedPreferences prefs = getSharedPreferences("nucloud_prefs", MODE_PRIVATE);
         prefs.edit()
-                .putString("plan_nombre", planSeleccionado.nombre)
-                .putString("plan_precio", planSeleccionado.precio)
-                .putString("plan_metodo", metodo)
+                .putString("plan_id", planId)
+                .putString("plan_nombre", planNombre)
+                .putString("plan_precio", planPrecio)
+                .putString("plan_metodo", metodoPago)
                 .putString("plan_alias", alias)
+                .putString("plan_cupon", cupon)
                 .apply();
 
-        Toast.makeText(this, "¡Plan contratado con éxito!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Plan contratado correctamente", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, DashboardClienteActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private PlanData getPlanById(String id) {
-        if (id == null) return null;
-
-        switch (id) {
-            case "nebula":
-                return new PlanData(
-                        "Plan Nebula",
-                        "$5.999 / mes",
-                        "1080p, 60 FPS, hasta 2 dispositivos."
-                );
-            case "quantum":
-                return new PlanData(
-                        "Plan Quantum",
-                        "$8.999 / mes",
-                        "1440p, 120 FPS, hasta 3 dispositivos."
-                );
-            case "eclipse":
-                return new PlanData(
-                        "Plan Eclipse",
-                        "$11.999 / mes",
-                        "4K HDR, 144 FPS, hasta 4 dispositivos."
-                );
-        }
-        return null;
-    }
-
-    private static class PlanData {
-        final String nombre;
-        final String precio;
-        final String descripcion;
-
-        PlanData(String nombre, String precio, String descripcion) {
-            this.nombre = nombre;
-            this.precio = precio;
-            this.descripcion = descripcion;
-        }
     }
 }

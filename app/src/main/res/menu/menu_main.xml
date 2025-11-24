@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_inicio"
+        android:title="Inicio" />
+    <item
+        android:id="@+id/action_ofertas"
+        android:title="Ofertas" />
+    <item
+        android:id="@+id/action_dashboard_cliente"
+        android:title="Mi cuenta (cliente)" />
+    <item
+        android:id="@+id/action_login_admin"
+        android:title="Ingreso administrador" />
+</menu>

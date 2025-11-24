@@ -15,9 +15,16 @@
         android:theme="@style/Theme.NuCloudViolet">
 
         <activity android:name=".DashboardClienteActivity" />
+
         <activity android:name=".OrdenActivity" />
+
         <activity android:name=".OfertasActivity" />
+
         <activity android:name=".LoginActivity" />
+
+        <activity android:name=".AdminDashboardActivity" />
+
+        <activity android:name=".AdminLoginActivity" />
 
         <activity
             android:name=".MainActivity"

@@ -26,10 +26,8 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/llMain"
@@ -43,29 +41,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <ImageButton
+                    android:id="@+id/btnMenu"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/cd_menu"
+                    android:padding="4dp"
+                    android:tint="@color/text_primary"
+                    app:srcCompat="@drawable/ic_menu"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
                 <TextView
                     android:id="@+id/tvBrand"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_sm"
                     android:layout_marginTop="@dimen/space_sm"
                     android:text="@string/brand_title"
                     android:textColor="@color/text_primary"
                     android:textSize="@dimen/subtitle_size"
-                    tools:ignore="MissingConstraints" />
-
-                <Button
-                    android:id="@+id/btnStartNow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/button_rose"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/btn_start_now"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tvBrand"
+                    app:layout_constraintStart_toEndOf="@id/btnMenu"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -203,7 +203,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/the_witcher"
                     app:layout_columnWeight="1" />
-
             </androidx.gridlayout.widget.GridLayout>
 
             <LinearLayout
@@ -213,145 +212,6 @@
                 android:layout_marginTop="24dp"
                 android:orientation="horizontal"
                 android:gravity="center">
-
-                <!-- 1) Todos tus juegos -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_beneficio_todos_juegos"
-                        android:contentDescription="Todos tus juegos" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Todos tus juegos"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:gravity="center" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="NuCloud es un PC Windows completo. Instalá cualquier juego de Steam, Epic, Battle.net u otra plataforma y jugá sin límites."
-                        android:textColor="@android:color/white"
-                        android:textSize="11sp"
-                        android:gravity="center" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:contentDescription="Juegos de PC en Mac" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Juegos de PC en Mac"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:gravity="center" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Convertí tu Mac en una máquina gamer definitiva, sin particiones raras ni problemas de compatibilidad."
-                        android:textColor="@android:color/white"
-                        android:textSize="11sp"
-                        android:gravity="center" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:contentDescription="Cualquier dispositivo" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Cualquier dispositivo"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:gravity="center" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Jugá desde Windows, macOS, Linux, tablets o smartphones. Si tu equipo se conecta a internet, puede correr NuCloud."
-                        android:textColor="@android:color/white"
-                        android:textSize="11sp"
-                        android:gravity="center" />
-                </LinearLayout>
-
-                <!-- 4) Config alta -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:contentDescription="Config alta" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Config alta"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:gravity="center" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Disfrutá de gráficos en alta resolución y rendimiento estable, sin tener que invertir en una PC gamer costosa."
-                        android:textColor="@android:color/white"
-                        android:textSize="11sp"
-                        android:gravity="center" />
-                </LinearLayout>
 
             </LinearLayout>
 

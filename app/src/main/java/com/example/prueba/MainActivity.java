@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     @Nullable private TextView tvHeroBody;
     @Nullable private TextView tvCompatibility;
 
-    @Nullable private Button btnStartNow;
     @Nullable private Button btnSeeOffers;
+    @Nullable private ImageButton btnMenu;
 
     @Nullable private LinearLayout llDynamicBanner;
 
@@ -38,20 +40,15 @@ public class MainActivity extends AppCompatActivity {
         tvHeroBody      = findViewById(R.id.tvHeroBody);
         tvCompatibility = findViewById(R.id.tvCompatibility);
 
-        btnStartNow     = findViewById(R.id.btnStartNow);
         btnSeeOffers    = findViewById(R.id.btnSeeOffers);
+        btnMenu         = findViewById(R.id.btnMenu);
 
         llDynamicBanner = findViewById(R.id.llDynamicBanner);
 
         svContent = findViewById(R.id.svContent);
         gridGames = findViewById(R.id.gridGames);
 
-        if (btnStartNow != null) {
-            btnStartNow.setOnClickListener(v ->
-                    Toast.makeText(this, "Arrancamos", Toast.LENGTH_SHORT).show()
-            );
-        }
-
+        // Botón "Descubrí todas las ofertas"
         if (btnSeeOffers != null) {
             btnSeeOffers.setOnClickListener(v -> {
                 Intent intent = new Intent(MainActivity.this, OfertasActivity.class);
@@ -59,7 +56,37 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        // Menú hamburguesa
+        if (btnMenu != null) {
+            btnMenu.setOnClickListener(this::mostrarMenu);
+        }
+
         addDynamicBanner();
+    }
+
+    private void mostrarMenu(View anchor) {
+        PopupMenu popup = new PopupMenu(MainActivity.this, anchor);
+        popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_inicio) {
+                Toast.makeText(MainActivity.this, "Ya estás en Inicio", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.action_ofertas) {
+                startActivity(new Intent(MainActivity.this, OfertasActivity.class));
+                return true;
+            } else if (id == R.id.action_dashboard_cliente) {
+                startActivity(new Intent(MainActivity.this, DashboardClienteActivity.class));
+                return true;
+            } else if (id == R.id.action_login_admin) {
+                startActivity(new Intent(MainActivity.this, AdminLoginActivity.class));
+                return true;
+            }
+            return false;
+        });
+
+        popup.show();
     }
 
     private void addDynamicBanner() {

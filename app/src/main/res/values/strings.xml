@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">NuCloud Gaming</string>
 
+    <string name="cd_menu">Menú de navegación</string>
+
     <string name="brand_title">NuCloud GAMING</string>
 
     <string name="hero_title">Tu nueva forma de jugar\nEn la Nube</string>

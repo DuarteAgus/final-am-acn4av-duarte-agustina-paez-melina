@@ -16,6 +16,8 @@
 
         <activity android:name=".DashboardClienteActivity" />
 
+        <activity android:name=".ClientesActivity" />
+
         <activity android:name=".OrdenActivity" />
 
         <activity android:name=".OfertasActivity" />

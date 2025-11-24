@@ -1,6 +1,7 @@
 package com.example.prueba;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         svContent = findViewById(R.id.svContent);
         gridGames = findViewById(R.id.gridGames);
 
-        // Botón "Descubrí todas las ofertas"
         if (btnSeeOffers != null) {
             btnSeeOffers.setOnClickListener(v -> {
                 Intent intent = new Intent(MainActivity.this, OfertasActivity.class);
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // Menú hamburguesa
         if (btnMenu != null) {
             btnMenu.setOnClickListener(this::mostrarMenu);
         }
@@ -70,19 +69,34 @@ public class MainActivity extends AppCompatActivity {
 
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
+
             if (id == R.id.action_inicio) {
                 Toast.makeText(MainActivity.this, "Ya estás en Inicio", Toast.LENGTH_SHORT).show();
                 return true;
+
             } else if (id == R.id.action_ofertas) {
                 startActivity(new Intent(MainActivity.this, OfertasActivity.class));
                 return true;
+
             } else if (id == R.id.action_dashboard_cliente) {
-                startActivity(new Intent(MainActivity.this, DashboardClienteActivity.class));
+
+                SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_USER, MODE_PRIVATE);
+                boolean logged = prefs.getBoolean(LoginActivity.KEY_IS_LOGGED, false);
+
+                if (logged) {
+                    startActivity(new Intent(MainActivity.this, DashboardClienteActivity.class));
+                } else {
+                    Intent i = new Intent(MainActivity.this, LoginActivity.class);
+
+                    startActivity(i);
+                }
                 return true;
+
             } else if (id == R.id.action_login_admin) {
                 startActivity(new Intent(MainActivity.this, AdminLoginActivity.class));
                 return true;
             }
+
             return false;
         });
 

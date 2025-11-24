@@ -65,9 +65,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="(Acá el administrador puede gestionar planes y usuarios de NuCloud.)"
+                android:text="(Desde este panel el administrador gestiona planes y clientes. El catálogo de juegos se administra en la versión web.)"
                 android:textColor="@android:color/white"
                 android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btnIrClientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Ver clientes detallados" />
 
             <View
                 android:layout_width="match_parent"
@@ -121,6 +128,13 @@
                     android:text="Agregar plan" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btnEliminarUltimoPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Eliminar último plan" />
+
             <TextView
                 android:id="@+id/tvPlanesSubtitulo"
                 android:layout_width="match_parent"
@@ -144,13 +158,12 @@
                 android:layout_marginTop="16dp"
                 android:background="#33FFFFFF" />
 
-            <!-- SECCIÓN: GESTIÓN DE USUARIOS -->
             <TextView
                 android:id="@+id/tvTituloUsuarios"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Gestión de usuarios"
+                android:text="Gestión de clientes"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

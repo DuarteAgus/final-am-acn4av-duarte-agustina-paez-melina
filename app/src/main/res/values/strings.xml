@@ -24,6 +24,14 @@
     <string name="cd_game_7">Juego 7</string>
     <string name="cd_game_8">Juego 8</string>
     <string name="cd_game_9">Juego 9</string>
+
+    <string-array name="planes_cliente_array">
+        <item>Plan Nebula</item>
+        <item>Plan Quantum</item>
+        <item>Plan Eclipse</item>
+        <item>Sin plan</item>
+    </string-array>
+
 </resources>
 
 

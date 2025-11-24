@@ -1,5 +1,6 @@
 package com.example.prueba;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -16,10 +17,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private TextView tvAdminHighlight;
     private TextView tvAdminHint;
     private Button btnCambiarDestacado;
+    private Button btnIrClientes;
 
     private EditText etPlanNombre;
     private EditText etPlanPrecio;
     private Button btnAgregarPlan;
+    private Button btnEliminarUltimoPlan;
     private LinearLayout llListaPlanes;
 
     private EditText etUsuarioNombre;
@@ -36,23 +39,26 @@ public class AdminDashboardActivity extends AppCompatActivity {
         tvAdminHighlight = findViewById(R.id.tvAdminHighlight);
         tvAdminHint      = findViewById(R.id.tvAdminHint);
         btnCambiarDestacado = findViewById(R.id.btnCambiarDestacado);
+        btnIrClientes       = findViewById(R.id.btnIrClientes);
 
-        etPlanNombre  = findViewById(R.id.etPlanNombre);
-        etPlanPrecio  = findViewById(R.id.etPlanPrecio);
-        btnAgregarPlan = findViewById(R.id.btnAgregarPlan);
-        llListaPlanes  = findViewById(R.id.llListaPlanes);
+        etPlanNombre        = findViewById(R.id.etPlanNombre);
+        etPlanPrecio        = findViewById(R.id.etPlanPrecio);
+        btnAgregarPlan      = findViewById(R.id.btnAgregarPlan);
+        btnEliminarUltimoPlan = findViewById(R.id.btnEliminarUltimoPlan);
+        llListaPlanes       = findViewById(R.id.llListaPlanes);
 
-        etUsuarioNombre        = findViewById(R.id.etUsuarioNombre);
-        btnAgregarUsuario      = findViewById(R.id.btnAgregarUsuario);
+        etUsuarioNombre         = findViewById(R.id.etUsuarioNombre);
+        btnAgregarUsuario       = findViewById(R.id.btnAgregarUsuario);
         btnEliminarUltimoUsuario = findViewById(R.id.btnEliminarUltimoUsuario);
-        llListaUsuarios        = findViewById(R.id.llListaUsuarios);
+        llListaUsuarios         = findViewById(R.id.llListaUsuarios);
 
         tvAdminWelcome.setText("Panel de administración NuCloud");
         tvAdminHighlight.setText("Plan destacado hoy: Nebula");
-        tvAdminHint.setText("(Acá el administrador puede gestionar planes y usuarios de NuCloud.)");
+        tvAdminHint.setText("(Desde este panel el administrador gestiona planes y clientes. El catálogo de juegos se administra en la versión web.)");
 
         agregarPlanEnLista("Plan Nebula", "$5.999 / mes");
         agregarPlanEnLista("Plan Quantum", "$8.999 / mes");
+        agregarPlanEnLista("Plan Eclipse", "$11.999 / mes");
 
         agregarUsuarioEnLista("agustina@nucloud.com");
         agregarUsuarioEnLista("cliente.demo@nucloud.com");
@@ -60,6 +66,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnCambiarDestacado.setOnClickListener(v -> {
             tvAdminHighlight.setText("Plan destacado hoy: Quantum -20% OFF");
             Toast.makeText(this, "Plan destacado actualizado", Toast.LENGTH_SHORT).show();
+        });
+
+        btnIrClientes.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, ClientesActivity.class);
+            startActivity(intent);
         });
 
         btnAgregarPlan.setOnClickListener(v -> {
@@ -80,6 +91,16 @@ public class AdminDashboardActivity extends AppCompatActivity {
             etPlanNombre.setText("");
             etPlanPrecio.setText("");
             Toast.makeText(this, "Plan agregado", Toast.LENGTH_SHORT).show();
+        });
+
+        btnEliminarUltimoPlan.setOnClickListener(v -> {
+            int count = llListaPlanes.getChildCount();
+            if (count > 0) {
+                llListaPlanes.removeViewAt(count - 1);
+                Toast.makeText(this, "Último plan eliminado", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "No hay planes para eliminar", Toast.LENGTH_SHORT).show();
+            }
         });
 
         btnAgregarUsuario.setOnClickListener(v -> {
@@ -104,7 +125,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void agregarPlanEnLista(String nombre, String precio) {
         TextView tv = new TextView(this);

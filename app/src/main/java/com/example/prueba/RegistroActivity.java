@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class RegistroActivity extends AppCompatActivity {
 
     private EditText etNombre;
@@ -19,6 +21,8 @@ public class RegistroActivity extends AppCompatActivity {
     private Button btnCrearCuenta;
 
     private String planIdFromIntent;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,8 @@ public class RegistroActivity extends AppCompatActivity {
         btnCrearCuenta     = findViewById(R.id.btnCrearCuenta);
 
         planIdFromIntent = getIntent().getStringExtra(OfertasActivity.EXTRA_PLAN_ID);
+
+        mAuth = FirebaseAuth.getInstance();
 
         btnCrearCuenta.setOnClickListener(v -> registrar());
     }
@@ -59,25 +65,35 @@ public class RegistroActivity extends AppCompatActivity {
             return;
         }
 
-        SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_USER, MODE_PRIVATE);
-        prefs.edit()
-                .putBoolean(LoginActivity.KEY_IS_LOGGED, true)
-                .putString(LoginActivity.KEY_EMAIL, email)
-                .apply();
+        // Crear usuario en Firebase
+        mAuth.createUserWithEmailAndPassword(email, pass)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
 
-        Toast.makeText(this, "Cuenta creada y sesión iniciada", Toast.LENGTH_SHORT).show();
+                        // (Opcional) mantener tu SharedPreferences para el flujo actual
+                        SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_USER, MODE_PRIVATE);
+                        prefs.edit()
+                                .putBoolean(LoginActivity.KEY_IS_LOGGED, true)
+                                .putString(LoginActivity.KEY_EMAIL, email)
+                                .apply();
 
-        if (planIdFromIntent != null) {
+                        Toast.makeText(this, "Cuenta creada y sesión iniciada", Toast.LENGTH_SHORT).show();
 
-            Intent i = new Intent(this, OrdenActivity.class);
-            i.putExtra(OfertasActivity.EXTRA_PLAN_ID, planIdFromIntent);
-            startActivity(i);
-        } else {
+                        if (planIdFromIntent != null) {
+                            Intent i = new Intent(this, OrdenActivity.class);
+                            i.putExtra(OfertasActivity.EXTRA_PLAN_ID, planIdFromIntent);
+                            startActivity(i);
+                        } else {
+                            Intent i = new Intent(this, DashboardClienteActivity.class);
+                            startActivity(i);
+                        }
 
-            Intent i = new Intent(this, DashboardClienteActivity.class);
-            startActivity(i);
-        }
+                        finish();
 
-        finish();
+                    } else {
+                        String msg = (task.getException() != null) ? task.getException().getMessage() : "Error al crear cuenta";
+                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class LoginActivity extends AppCompatActivity {
 
     public static final String PREFS_USER    = "nucloud_user";
@@ -23,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String planIdFromIntent;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         btnGoRegister = findViewById(R.id.btnGoRegister);
 
         planIdFromIntent = getIntent().getStringExtra(OfertasActivity.EXTRA_PLAN_ID);
+
+        mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> intentarLogin());
 
@@ -59,23 +65,34 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        SharedPreferences prefs = getSharedPreferences(PREFS_USER, MODE_PRIVATE);
-        prefs.edit()
-                .putBoolean(KEY_IS_LOGGED, true)
-                .putString(KEY_EMAIL, email)
-                .apply();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
 
-        Toast.makeText(this, "Sesión iniciada", Toast.LENGTH_SHORT).show();
+                        // Mantengo tu SharedPreferences para no romper el resto del flujo actual
+                        SharedPreferences prefs = getSharedPreferences(PREFS_USER, MODE_PRIVATE);
+                        prefs.edit()
+                                .putBoolean(KEY_IS_LOGGED, true)
+                                .putString(KEY_EMAIL, email)
+                                .apply();
 
-        if (planIdFromIntent != null) {
-            Intent intent = new Intent(this, OrdenActivity.class);
-            intent.putExtra(OfertasActivity.EXTRA_PLAN_ID, planIdFromIntent);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, DashboardClienteActivity.class);
-            startActivity(intent);
-        }
+                        Toast.makeText(this, "Sesión iniciada", Toast.LENGTH_SHORT).show();
 
-        finish();
+                        if (planIdFromIntent != null) {
+                            Intent intent = new Intent(this, OrdenActivity.class);
+                            intent.putExtra(OfertasActivity.EXTRA_PLAN_ID, planIdFromIntent);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(this, DashboardClienteActivity.class);
+                            startActivity(intent);
+                        }
+
+                        finish();
+
+                    } else {
+                        String msg = (task.getException() != null) ? task.getException().getMessage() : "Error al iniciar sesión";
+                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

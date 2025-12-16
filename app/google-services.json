@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378777782558",
+    "project_id": "nucloud-gaming-mobile",
+    "storage_bucket": "nucloud-gaming-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378777782558:android:dcb436c76e90203b53a10f",
+        "android_client_info": {
+          "package_name": "com.example.prueba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMPHLhNgKtaUs5P8cLekUtwUnYlMmPuEo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

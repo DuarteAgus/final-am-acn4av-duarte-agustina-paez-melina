@@ -56,7 +56,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         tvAdminWelcome.setText("Panel de administración NuCloud");
         tvAdminHighlight.setText("Plan destacado hoy: Quantum -20% OFF");
-        tvAdminHint.setText("(Aquí el administrador puede gestionar planes y usuarios de NuCloud.)");
 
         agregarPlanEnLista("Plan Nebula - $5.999 / mes");
         agregarPlanEnLista("Plan Quantum - $8.999 / mes");

@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class DashboardClienteActivity extends AppCompatActivity {
 
     private TextView tvUsuario;
@@ -42,6 +45,14 @@ public class DashboardClienteActivity extends AppCompatActivity {
         btnLogout         = findViewById(R.id.btnLogout);
         llDispositivos    = findViewById(R.id.llDispositivos);
 
+        // ✅ Firebase manda: si no hay sesión, no debería entrar al dashboard
+        if (!haySesionFirebase()) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+            finish();
+            return;
+        }
+
         cargarUsuario();
 
         cargarPlanDesdePrefs();
@@ -51,12 +62,15 @@ public class DashboardClienteActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(v -> cerrarSesion());
     }
 
-    private void cargarUsuario() {
-        SharedPreferences prefsUser = getSharedPreferences(LoginActivity.PREFS_USER, MODE_PRIVATE);
-        String email = prefsUser.getString(LoginActivity.KEY_EMAIL, null);
+    private boolean haySesionFirebase() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
 
-        if (email != null) {
-            tvUsuario.setText("Usuario: " + email);
+    private void cargarUsuario() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null && user.getEmail() != null) {
+            tvUsuario.setText("Usuario: " + user.getEmail());
         } else {
             tvUsuario.setText("Usuario: invitado");
         }
@@ -132,6 +146,10 @@ public class DashboardClienteActivity extends AppCompatActivity {
     }
 
     private void cerrarSesion() {
+        // ✅ Logout real Firebase
+        FirebaseAuth.getInstance().signOut();
+
+        // (Opcional) limpiar tu prefs vieja para que no quede "logueado" fake
         SharedPreferences prefsUser = getSharedPreferences(LoginActivity.PREFS_USER, MODE_PRIVATE);
         prefsUser.edit().clear().apply();
 

@@ -65,7 +65,6 @@ public class RegistroActivity extends AppCompatActivity {
             return;
         }
 
-        // Crear usuario en Firebase
         mAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {

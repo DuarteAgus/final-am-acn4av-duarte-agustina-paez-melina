@@ -1,7 +1,6 @@
 package com.example.prueba;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -82,14 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
             } else if (id == R.id.action_dashboard_cliente) {
 
-                SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_USER, MODE_PRIVATE);
-                boolean logged = prefs.getBoolean(LoginActivity.KEY_IS_LOGGED, false);
+                boolean logged = FirebaseAuth.getInstance().getCurrentUser() != null;
 
                 if (logged) {
                     startActivity(new Intent(MainActivity.this, DashboardClienteActivity.class));
                 } else {
                     Intent i = new Intent(MainActivity.this, LoginActivity.class);
-
                     startActivity(i);
                 }
                 return true;

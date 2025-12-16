@@ -1,11 +1,12 @@
 package com.example.prueba;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class OfertasActivity extends AppCompatActivity {
 
@@ -34,16 +35,13 @@ public class OfertasActivity extends AppCompatActivity {
     }
 
     private void openOrderWithLoginCheck(String planId) {
-        SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_USER, MODE_PRIVATE);
-        boolean logged = prefs.getBoolean(LoginActivity.KEY_IS_LOGGED, false);
+        boolean logged = FirebaseAuth.getInstance().getCurrentUser() != null;
 
         if (logged) {
-
             Intent intent = new Intent(this, OrdenActivity.class);
             intent.putExtra(EXTRA_PLAN_ID, planId);
             startActivity(intent);
         } else {
-
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(EXTRA_PLAN_ID, planId); // para saber qué plan quería
             startActivity(intent);

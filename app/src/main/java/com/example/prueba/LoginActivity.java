@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
             getSharedPreferences("nucloud_prefs", MODE_PRIVATE).edit().clear().apply();
         }
 
+
         mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(v -> intentarLogin());
@@ -53,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
             if (planIdFromIntent != null) {
                 intent.putExtra(OfertasActivity.EXTRA_PLAN_ID, planIdFromIntent);
             }
-
             startActivity(intent);
         });
     }
@@ -95,9 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
 
                     } else {
-                        String msg = (task.getException() != null)
-                                ? task.getException().getMessage()
-                                : "Error al iniciar sesión";
+                        String msg = (task.getException() != null) ? task.getException().getMessage() : "Error al iniciar sesión";
                         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                     }
                 });

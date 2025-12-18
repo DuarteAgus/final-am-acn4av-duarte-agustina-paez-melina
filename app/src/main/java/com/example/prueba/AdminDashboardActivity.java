@@ -12,16 +12,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class AdminDashboardActivity extends AppCompatActivity {
 
     private TextView tvAdminWelcome;
     private TextView tvAdminHighlight;
-    private TextView tvAdminHint;
 
     private EditText etPlanNombre;
     private EditText etPlanPrecio;
     private Button btnCambiarDestacado;
     private Button btnAgregarPlan;
+    private Button btnEliminarUltimoPlan;
     private LinearLayout llListaPlanes;
 
     private EditText etUsuarioNombre;
@@ -29,6 +31,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private Button btnEliminarUltimoUsuario;
     private LinearLayout llListaUsuarios;
 
+    private Button btnIrClientes;
     private Button btnAdminLogout;
 
     @Override
@@ -38,7 +41,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         tvAdminWelcome   = findViewById(R.id.tvAdminWelcome);
         tvAdminHighlight = findViewById(R.id.tvAdminHighlight);
-        tvAdminHint      = findViewById(R.id.tvAdminHint);
 
         etPlanNombre        = findViewById(R.id.etPlanNombre);
         etPlanPrecio        = findViewById(R.id.etPlanPrecio);
@@ -46,16 +48,19 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnAgregarPlan      = findViewById(R.id.btnAgregarPlan);
         llListaPlanes       = findViewById(R.id.llListaPlanes);
 
-        etUsuarioNombre        = findViewById(R.id.etUsuarioNombre);
-        btnAgregarUsuario      = findViewById(R.id.btnAgregarUsuario);
-        btnEliminarUltimoUsuario = findViewById(R.id.btnEliminarUltimoUsuario);
-        llListaUsuarios        = findViewById(R.id.llListaUsuarios);
+        btnEliminarUltimoPlan = findViewById(R.id.btnEliminarUltimoPlan);
 
+        etUsuarioNombre           = findViewById(R.id.etUsuarioNombre);
+        btnAgregarUsuario         = findViewById(R.id.btnAgregarUsuario);
+        btnEliminarUltimoUsuario  = findViewById(R.id.btnEliminarUltimoUsuario);
+        llListaUsuarios           = findViewById(R.id.llListaUsuarios);
+
+        btnIrClientes  = findViewById(R.id.btnIrClientes);
         btnAdminLogout = findViewById(R.id.btnAdminLogout);
 
         tvAdminWelcome.setText("Panel de administración NuCloud");
         tvAdminHighlight.setText("Plan destacado hoy: Quantum -20% OFF");
-
+        
         agregarPlanEnLista("Plan Nebula - $5.999 / mes");
         agregarPlanEnLista("Plan Quantum - $8.999 / mes");
         agregarPlanEnLista("Plan Eclipse - $11.999 / mes");
@@ -89,6 +94,18 @@ public class AdminDashboardActivity extends AppCompatActivity {
             Toast.makeText(this, "Plan agregado", Toast.LENGTH_SHORT).show();
         });
 
+        if (btnEliminarUltimoPlan != null) {
+            btnEliminarUltimoPlan.setOnClickListener(v -> {
+                int count = llListaPlanes.getChildCount();
+                if (count > 0) {
+                    llListaPlanes.removeViewAt(count - 1);
+                    Toast.makeText(this, "Se eliminó el último plan", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "No hay planes para eliminar", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         btnAgregarUsuario.setOnClickListener(v -> {
             String usuario = etUsuarioNombre.getText().toString().trim();
             if (TextUtils.isEmpty(usuario)) {
@@ -112,6 +129,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
             }
         });
 
+        if (btnIrClientes != null) {
+            btnIrClientes.setOnClickListener(v -> {
+                startActivity(new Intent(this, ClientesActivity.class));
+            });
+        }
+
         btnAdminLogout.setOnClickListener(v -> cerrarSesionAdmin());
     }
 
@@ -134,6 +157,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void cerrarSesionAdmin() {
+        FirebaseAuth.getInstance().signOut();
+
         Toast.makeText(this, "Sesión de administrador cerrada", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

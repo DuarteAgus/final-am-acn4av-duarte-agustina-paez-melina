@@ -67,15 +67,6 @@
                 android:layout_marginTop="12dp"
                 android:text="Cambiar plan destacado" />
 
-            <TextView
-                android:id="@+id/tvAdminHint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="(Desde este panel el administrador gestiona planes y clientes. El catálogo de juegos se administra en la versión web.)"
-                android:textColor="@android:color/white"
-                android:textSize="13sp" />
-
             <Button
                 android:id="@+id/btnIrClientes"
                 android:layout_width="match_parent"

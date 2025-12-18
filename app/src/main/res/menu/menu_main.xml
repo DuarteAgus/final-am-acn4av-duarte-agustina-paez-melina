@@ -8,7 +8,7 @@
         android:title="Ofertas" />
     <item
         android:id="@+id/action_dashboard_cliente"
-        android:title="Mi cuenta (cliente)" />
+        android:title="Ingresar" />
     <item
         android:id="@+id/action_login_admin"
         android:title="Ingreso administrador" />
